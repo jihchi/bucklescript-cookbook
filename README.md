@@ -60,7 +60,7 @@ There are primarily two ways to contribute:
 
 #### Serialize a record to JSON
 Uses [bs-json](https://github.com/reasonml-community/bs-json)
-```ml
+```re
 type line = {
   start: point,
   end_: point,
@@ -199,7 +199,7 @@ let () =
 
 Use [Printf module](http://caml.inria.fr/pub/docs/manual-ocaml/libref/Printf.html)
 
-``re
+```re
 /* Prints "Foo 2 bar" */
 let () = Printf.printf("Foo %d %s", 2, "bar");
 ```
@@ -331,11 +331,13 @@ let () = painIndexMap |> Hashtbl.iter((k, v) => Js.log({j|key:$k, val:$v|j}));
 ## FFI
 
 #### Bind to a simple function
+
 ```re
 [@bs.val] external random : unit => float = "Math.random";
 ```
 
 #### Bind to a function in another module
+
 ```re
 [@bs.val] [@bs.module "left-pad"] external leftpad : (string, int, char) => string = "";
 ```
@@ -343,6 +345,7 @@ let () = painIndexMap |> Hashtbl.iter((k, v) => Js.log({j|key:$k, val:$v|j}));
 #### Bind to a function overloaded to take an argument of several different types
 
 ##### Mutiple externals
+
 ```re
 module Date = {
   type t;
@@ -356,6 +359,7 @@ let date2 = Date.fromString("1995-12-17T03:24:00");
 ```
 
 ##### bs.unwrap
+
 ```re
 module Date = {
   type t;
@@ -368,6 +372,7 @@ let date2 = Date.make(`String("1995-12-17T03:24:00"));
 ```
 
 ##### GADT
+
 ```re
 module Date = {
   type t;
@@ -383,11 +388,13 @@ let date2 = Date.make(String, "1995-12-17T03:24:00");
 ```
 
 #### Create a Plain Old JavaScript Object
+
 ```re
 let person = [%obj name <- (first <- "Bob"; last <- "Zhmith"); age <- 32]
 ```
 
 #### Raise a javascript exception, then catch it and print its message
+
 ```re
 let () =
   try (Js.Exn.raiseError("oops!")) {
@@ -403,6 +410,7 @@ let () =
 TODO
 
 #### Bind to a function that takes a variable number of arguments of different types
+
 ```re
 module Arg = {
   type t;
@@ -440,6 +448,7 @@ let printAllLinks = () =>
 
 let () = Window.setOnLoad(window, printAllLinks);
 ```
+
 #### Query the GitHub API
 Uses [bs-json](https://github.com/reasonml-community/bs-json) and [bs-fetch](https://github.com/reasonml-community/bs-fetch)
 
@@ -460,25 +469,30 @@ let printGithubRepos = () =>
 
 let () = printGithubRepos();
 ```
+
 ## Node-specific
 
 #### Read lines from a text file
 Uses [bs-node](https://github.com/reasonml-community/bs-node)
+
 ```re
 let () = Node.Fs.readFileAsUtf8Sync("README.md") |> Js.String.split("\n") |> Array.iter(Js.log);
 ```
 
 #### Read and parse a JSON file
 Uses [bs-json](https://github.com/reasonml-community/bs-json) and [bs-node](https://github.com/reasonml-community/bs-node)
-```tr
+
+```re
 let decodeName = (text) => Js.Json.parseExn(text) |> Json.Decode.(field("name", string));
 
 let () =
   /* read [package.json] file */
   Node.Fs.readFileAsUtf8Sync("package.json") |> decodeName |> Js.log;
 ```
+
 #### Find files using a given predicate
 Uses [bs-glob](https://github.com/reasonml-community/bs-glob)
+
 ```re
 let () =
   /* find and list all javascript files in subfolders */
@@ -487,6 +501,7 @@ let () =
 
 #### Run an external command
 Uses [bs-node](https://github.com/reasonml-community/bs-node)
+
 ```re
 let () =
   /* prints node's version */
